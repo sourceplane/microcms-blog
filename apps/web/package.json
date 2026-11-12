@@ -1,0 +1,44 @@
+{
+  "name": "@app/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build && opennextjs-cloudflare build --skipBuild --skipWranglerConfigCheck && opennextjs-cloudflare populateCache local",
+    "start": "next start -p 3000",
+    "preview": "opennextjs-cloudflare preview",
+    "typecheck": "next typegen && tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write --ignore-path ../../.gitignore './**/*.{js,jsx,ts,tsx,json,css}'"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true,
+    "jsxSingleQuote": false,
+    "printWidth": 100
+  },
+  "dependencies": {
+    "@opennextjs/cloudflare": "1.20.16",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "cheerio": "^1.0.0-rc.12",
+    "date-fns-tz": "^3.2.0",
+    "encoding": "^0.1.13",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.8",
+    "eslint-config-prettier": "^10.1.8",
+    "highlight.js": "^11.11.1",
+    "microcms-js-sdk": "^3.5.1",
+    "next": "16.4.5",
+    "prettier": "^3.9.6",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "wrangler": "^4.160.1"
+  }
+}

@@ -8,7 +8,7 @@ it somebody else's blog in one landing.**
 
 | | |
 |---|---|
-| Status | In progress — MC0 on main |
+| Status | In progress — MC1 on main: the site runs on Workers |
 | Upstream | [microcmsio/simple-blog-with-microcms](https://github.com/microcmsio/simple-blog-with-microcms) (MIT, © 2023 microCMS), at `4077da9` (2026-11-11) — Vercel's "Next.js Blog with microCMS" template |
 | Reference | [cms-contentful](https://github.com/sourceplane/cms-contentful) — the same scaffolding, tests, bootstrap and unconnected sample mode; [algolia-search](https://github.com/sourceplane/algolia-search) — keys pushed to the Worker after the build and read per request |
 | Key | `MC` |
