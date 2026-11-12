@@ -1,0 +1,15 @@
+apiVersion: orun.io/v1
+kind: TaskContract
+metadata:
+  name: MC-1
+  title: "The spec"
+spec:
+  goal: The microcms-blog repository is born with its intent, CI, tooling and spec index, and the microcms-blog epic — declaration, doc set and task contracts — is on main
+  affects:
+    - specs/epics/microcms-blog
+    - specs/epics/README.md
+    - tasks
+  doneWhen:
+    - epic.yaml, README, design, implementation plan, risks and status are on main
+    - the three task contracts exist
+  gates: []

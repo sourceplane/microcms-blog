@@ -1,0 +1,32 @@
+# The epic's declaration. metadata.name equals the directory name; metadata.key
+# is the task-key prefix this epic reserves (MC → MC-1, MC-2, …). Owner, target
+# date and health are the platform's — never written here.
+apiVersion: orun.io/v1
+kind: Epic
+metadata:
+  name: microcms-blog
+  key: MC
+spec:
+  title: "Vercel's Next.js Blog with microCMS on Cloudflare Workers"
+  summary: "Vercel's Next.js Blog with microCMS — microCMS's Simple Blog template: posts, tags and writers read through microCMS's SDK, code highlighted on the server, posts by tag, full-text search, pages of ten and drafts by their draft key — runs on Cloudflare Workers + Static Assets through @opennextjs/cloudflare, the service and its key read per request from the Worker and never built in, inside the Cirrus baseline's repository conventions, and becomes an Orun baseline that takes a new blog from nothing to live on stage and prod in one landing, serving sample posts until its owner connects a service."
+  state: started
+  milestones:
+    - name: "MC0 — the spec"
+      exitCriteria:
+        - "the repository is born with its intent, CI, tooling and spec index, and this doc set and the task contracts are on main"
+      tasks: [MC-1]
+    - name: "MC1 — the blog on Workers"
+      exitCriteria:
+        - "apps/web is the upstream template, built by next build, then by OpenNext into one Worker with Static Assets, every page rendered on request"
+        - "the service and its key are read per request from the Worker; with neither the blog serves sample posts under a notice that says how to connect"
+        - "the template's proxy.ts rule is a headers() rule: a draft (?dk=) is never cached, everything else keeps the template's CDN-Cache-Control"
+        - "`pnpm typecheck`, `pnpm lint`, `pnpm test` and `pnpm build` are green"
+        - "`wrangler dev` serves the home page, every sample post, a tag, a search, a second page and the 404s, and — connected to a local stand-in for microCMS's content API — the service's posts, an article with its writer, a draft and a tag"
+        - "the README says how to run, test, preview, connect and deploy it, and how every Vercel piece maps to Cloudflare"
+      tasks: [MC-2]
+    - name: "MC2 — a baseline"
+      exitCriteria:
+        - "blueprint.yaml (the console card) and repo-blueprint.yaml (the build) take a new blog from nothing to live on stage and prod in one landing, then record it"
+        - "a blog built from it carries the blog only, renamed throughout to its own name, repository and Worker, with the template's links and microCMS's variable names intact"
+        - "Baseline CI is green: contract tests (the deployment record rendered without PyYAML among them), generated component docs, the blueprint read by the pinned orun, the leak gate, the offline bootstrap and the end-to-end tier"
+      tasks: [MC-3]
