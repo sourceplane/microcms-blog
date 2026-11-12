@@ -5,9 +5,10 @@ Vercel's [Next.js Blog with microCMS](https://github.com/microcmsio/simple-blog-
 service read through its SDK, code blocks highlighted on the server with
 highlight.js, posts by tag, full-text search, pages of ten, and drafts
 previewed by their draft key — running on **Cloudflare Workers + Static
-Assets** through [`@opennextjs/cloudflare`](https://opennext.js.org/cloudflare), deployed by
-[Orun](https://github.com/sourceplane/orun) to stage and prod on every merge.
-Packaging it as an Orun baseline is the next milestone (MC2). It goes live before its owner has a microCMS service
+Assets** through [`@opennextjs/cloudflare`](https://opennext.js.org/cloudflare),
+and packaged as an **Orun baseline**: one command takes a new blog from
+nothing to live on stage and prod, in its own repository, under its own
+name — in ONE landing. It goes live before its owner has a microCMS service
 at all.
 
 The template's code is the code and microCMS stays the SaaS it is. What the
@@ -19,12 +20,62 @@ deploy contract; what it changes is what Workers force:
 - **Caching:** the template's Node `proxy.ts`, which marked a draft
   uncacheable, is now a `headers()` rule. On Workers that proxy is
   experimental, and its header was appended to the catch-all one instead of
-  replacing it. What
+  replacing it.
+
+What the baseline adds is everything needed to make a copy of it somebody
+else's — built the way
+[cirrus-baseline](https://github.com/sourceplane/cirrus-baseline) is. What
 makes it deployable with no microCMS service is the port's: an unconnected
 blog renders sample posts under a visible "not connected" notice instead of
 failing (the template threw at module load). See
 [`specs/epics/microcms-blog`](specs/epics/microcms-blog/README.md) for the
 design, the milestones and the as-built status.
+
+## Instantiating a site
+
+```bash
+git clone --depth 1 --branch <baseline-tag> https://github.com/sourceplane/microcms-blog
+cd microcms-blog
+orun new --blueprint repo-blueprint.yaml --out ~/blogs/acme-notes --run-hooks --resume \
+  --set reponame=acme-notes --set productname="Acme Notes" \
+  --set githuborg=acme-inc --set subdomain=<workers-dev-subdomain>
+```
+
+Or, once the platform's registry lists it, from the Orun console (Baselines →
+`microcms-blog` → Build). Two phases — `01-product` (the repository, its CI and
+the whole blog in one pull request, deployed to stage and prod by one
+convergence, smoke-tested) and `02-docs` (the live deployment recorded) —
+each landing one pull request in the new repository.
+**[BOOTSTRAP.md](BOOTSTRAP.md)** is the operator guide;
+[docs/phases/](docs/phases/README.md) has a page per phase.
+
+The new repository receives the **blog only** — the app, its tests, its CI,
+its tooling, a README of its own and its operating contract — renamed
+throughout to the blog's name, repository and Cloudflare Worker. None of this
+repository's machinery ships, and nothing that ships names it.
+
+The only provider the bootstrap asks for is Cloudflare. **microCMS is not a
+provider the platform brokers**, so the blog is built without it and its
+owner connects a service afterwards:
+- the three list APIs (`tags`, `writers`, `blog`), as
+  `apps/web/microcms-template.json` exports them;
+- two optional Orun secrets, `MICROCMS_SERVICE_DOMAIN` and `MICROCMS_API_KEY`;
+- a redeploy, which pushes both to the Worker as secrets.
+
+The blog's README, "Connect microCMS" (`.baseline/product/README.md` here),
+has the steps.
+
+| What makes it a baseline | Where |
+|---|---|
+| The console card (inputs, secrets, programme) | `blueprint.yaml` |
+| The build document (modules, phases, hooks) | `repo-blueprint.yaml` |
+| This tree's identity, and the bootstrap's task contracts | `.baseline/` |
+| The rename engine | `tooling/rebrand/rebrand.mjs` |
+| The bootstrap's helpers (deferrals, redeploy marker, work-tree strip) | `tooling/bootstrap/` |
+| The deployment-record renderer, and its test without PyYAML | `hooks/render-deployment-docs.sh`, `testing/render.test.sh` |
+| The blog's README and context pack | `.baseline/product/README.md`, `ai/context/` |
+| The baseline's tests: contract, leak, offline bootstrap, end to end (with a local microCMS stand-in) | `testing/`, `.github/workflows/baseline.yml` |
+| Cutting a `baseline-vN` tag | `.github/workflows/tag.yml` |
 
 ## What is here (the site)
 
@@ -97,3 +148,5 @@ pnpm preview                      # wrangler dev over the built Worker
 | Workflow | What it runs | Ships to a blog |
 |---|---|---|
 | `ci.yml` | the Orun pipeline, and the only workflow a blog carries: `orun plan --changed`, then one job per lane. A pull request runs the verify lanes (the blog built and dry-deployed per environment; they do not lint or run the tests), except the bootstrap's own landings (`orun/BASE-*`), where `plan` alone is the check; a merge deploys stage → prod. It plans nothing while `intent.yaml` names the placeholder workspace `ws_CHANGE_ME`, as this repository does. A manual run (Orunbase's Deploy button, or Run workflow on `main`) plans the environment and components it names under the push-to-main trigger, so they deploy as a merge deploys them | yes |
+| `baseline.yml` | the baseline's own tiers: contract tests (the deployment record rendered without PyYAML among them) and the component docs' drift check, the blueprint read by the pinned orun, the leak gate, the offline bootstrap, each landing installed, its fixture rendered, type-checked, linted, tested and built, then the blog built in a staged job tree with the microCMS secrets set and kept out of the build, dry-deployed, and served — with no microCMS service, then connected to a local stand-in for its content API | no |
+| `tag.yml` | cuts a `baseline-vN` tag (manual) | no |

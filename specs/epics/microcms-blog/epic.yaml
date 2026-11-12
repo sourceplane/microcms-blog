@@ -9,7 +9,7 @@ metadata:
 spec:
   title: "Vercel's Next.js Blog with microCMS on Cloudflare Workers"
   summary: "Vercel's Next.js Blog with microCMS — microCMS's Simple Blog template: posts, tags and writers read through microCMS's SDK, code highlighted on the server, posts by tag, full-text search, pages of ten and drafts by their draft key — runs on Cloudflare Workers + Static Assets through @opennextjs/cloudflare, the service and its key read per request from the Worker and never built in, inside the Cirrus baseline's repository conventions, and becomes an Orun baseline that takes a new blog from nothing to live on stage and prod in one landing, serving sample posts until its owner connects a service."
-  state: started
+  state: completed
   milestones:
     - name: "MC0 — the spec"
       exitCriteria:
