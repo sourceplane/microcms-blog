@@ -1,0 +1,29 @@
+apiVersion: orun.io/v1
+kind: TaskContract
+metadata:
+  name: MC-3
+  title: "microcms-blog becomes an Orun baseline"
+spec:
+  goal: blueprint.yaml and repo-blueprint.yaml take a new microCMS-backed blog from nothing to live on stage and prod in one landing, held by Baseline CI
+  affects:
+    - blueprint.yaml
+    - repo-blueprint.yaml
+    - BOOTSTRAP.md
+    - .baseline
+    - .github/workflows/baseline.yml
+    - .github/workflows/tag.yml
+    - ai/context
+    - docs/phases
+    - hooks
+    - testing
+    - tooling/rebrand
+    - tooling/bootstrap
+    - tooling/catalog
+    - apps/web/docs
+    - tests/web/docs
+    - specs/epics/microcms-blog
+    - README.md
+  doneWhen:
+    - every Baseline CI tier is green
+    - a blog placed from it carries the blog only, branded, with the template's links and microCMS's variable names intact
+  gates: []

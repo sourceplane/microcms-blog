@@ -1,0 +1,19 @@
+apiVersion: orun.io/v1
+kind: TaskContract
+metadata:
+  name: MC-2
+  title: "The blog on Workers"
+spec:
+  goal: Vercel's Next.js Blog with microCMS runs on Cloudflare Workers + Static Assets through OpenNext, the service and its key read per request from the Worker, deployable before a microCMS service exists, with its tests and a README that says how it maps to Vercel
+  affects:
+    - apps/web
+    - tests/web
+    - tooling/wire
+    - pnpm-lock.yaml
+    - pnpm-workspace.yaml
+    - README.md
+    - .gitignore
+  doneWhen:
+    - pnpm typecheck, lint, test and build are green
+    - wrangler dev serves the home page, every sample post, a tag, a search and the 404s with no service behind it, and the service's posts, an article and a draft from a local stand-in
+  gates: []
