@@ -4,7 +4,10 @@
 |---|---|---|
 | MC0 — the spec | ✅ | the repository's first commit, MC-1 |
 | MC1 — the blog on Workers | ✅ | MC-2 |
-| MC2 — a baseline | planned | MC-3 |
+| MC2 — a baseline | ✅ | MC-3, tagged `baseline-v1` |
+
+The Worker is 7.9 MiB raw, 1.9 MiB gzipped (highlight.js is most of it) —
+inside Workers Free's 3 MiB.
 
 ## Departures from the upstream template
 
